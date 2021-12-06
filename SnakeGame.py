@@ -3,6 +3,7 @@
 # ************************************
 from tkinter import *
 import random
+import time
 
 GAME_WIDTH = 1300
 GAME_HEIGHT = 700
@@ -12,7 +13,7 @@ BODY_PARTS = 3
 SNAKE_COLOR = "#00FF00"
 FOOD_COLOR = "#FF0000"
 BACKGROUND_COLOR = "#000000"
-automation_control = "on" #on or off
+automation_control = "off" #on or off
 
 
 class Snake:
@@ -128,15 +129,21 @@ def game_over():
     canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,
                        font=('consolas',70), text="GAME OVER", fill="red", tag="gameover")
 
-def automation_control():
+def automation_control(snake):
+    print("entered function")
     if automation_control == "off":
+        print("entered if")
         window.bind('<Left>', lambda event: change_direction('left'))
         window.bind('<Right>', lambda event: change_direction('right'))
         window.bind('<Up>', lambda event: change_direction('up'))
         window.bind('<Down>', lambda event: change_direction('down'))
-    else: 
-        while (check_collisions(snake) == False):
-            Random_No = random.randint(1, 5)
+        return True
+    elif automation_control == "on": 
+        print("entered else")
+        while ((check_collisions(snake)) != True):
+            time.sleep(2)
+            print("entered loop")
+            Random_No = random.randint(1, 4)
             print(Random_No)
             if Random_No == 1:
                 lambda event: change_direction('left')
@@ -146,6 +153,7 @@ def automation_control():
                 lambda event: change_direction('up') 
             elif Random_No == 4:
                 lambda event: change_direction('down') 
+    return False
 
 window = Tk()
 window.title("Snake game")
@@ -181,7 +189,8 @@ window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 snake = Snake()
 food = Food()
 
-automation_control()
+print(automation_control(snake))
+print("passed automation control")
 
 next_turn(snake, food)
 
