@@ -12,6 +12,7 @@ BODY_PARTS = 3
 SNAKE_COLOR = "#00FF00"
 FOOD_COLOR = "#FF0000"
 BACKGROUND_COLOR = "#000000"
+automation_control = "on" #on or off
 
 
 class Snake:
@@ -127,6 +128,24 @@ def game_over():
     canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,
                        font=('consolas',70), text="GAME OVER", fill="red", tag="gameover")
 
+def automation_control():
+    if automation_control == "off":
+        window.bind('<Left>', lambda event: change_direction('left'))
+        window.bind('<Right>', lambda event: change_direction('right'))
+        window.bind('<Up>', lambda event: change_direction('up'))
+        window.bind('<Down>', lambda event: change_direction('down'))
+    else: 
+        while (check_collisions(snake) == False):
+            Random_No = random.randint(1, 5)
+            print(Random_No)
+            if Random_No == 1:
+                lambda event: change_direction('left')
+            elif Random_No == 2:
+                lambda event: change_direction('right') 
+            elif Random_No == 3:
+                lambda event: change_direction('up') 
+            elif Random_No == 4:
+                lambda event: change_direction('down') 
 
 window = Tk()
 window.title("Snake game")
@@ -153,13 +172,16 @@ y = int((screen_height/2) - (window_height/2))
 
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-window.bind('<Left>', lambda event: change_direction('left'))
-window.bind('<Right>', lambda event: change_direction('right'))
-window.bind('<Up>', lambda event: change_direction('up'))
-window.bind('<Down>', lambda event: change_direction('down'))
+
+# window.bind('<Left>', lambda event: change_direction('left'))
+# window.bind('<Right>', lambda event: change_direction('right'))
+# window.bind('<Up>', lambda event: change_direction('up'))
+# window.bind('<Down>', lambda event: change_direction('down'))
 
 snake = Snake()
 food = Food()
+
+automation_control()
 
 next_turn(snake, food)
 
