@@ -24,8 +24,11 @@ class Snake:
         self.squares = []
 
         for i in range(0, BODY_PARTS):
-            # self.coordinates.append([0, 0])
-            self.coordinates.append([GAME_WIDTH / 2, GAME_HEIGHT / 2])
+            #Spawns the snake at (0,0)
+            self.coordinates.append([0, 0])
+
+            #Spawns the snake at the center
+            # self.coordinates.append([GAME_WIDTH / 2, GAME_HEIGHT / 2])
 
         for x, y in self.coordinates:
             square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR, tag="snake")
