@@ -27,10 +27,10 @@ class Snake:
 
         for i in range(0, BODY_PARTS):
             #Spawns the snake at (0,0)
-            self.coordinates.append([0, 0])
+            # self.coordinates.append([0, 0])
 
             #Spawns the snake at the center
-            # self.coordinates.append([GAME_WIDTH / 2, GAME_HEIGHT / 2])
+            self.coordinates.append([GAME_WIDTH / 2, GAME_HEIGHT / 2])
 
         for x, y in self.coordinates:
             square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR, tag="snake")
@@ -55,37 +55,39 @@ def next_turn(snake, food):
 
     x, y = snake.coordinates[0]
 
-    if direction == "up":
-        y -= SPACE_SIZE
-    elif direction == "down":
-        y += SPACE_SIZE
-    elif direction == "left":
-        x -= SPACE_SIZE
-    elif direction == "right":
-        x += SPACE_SIZE
+    random_direction_duration = time.time() + 3
+    while time.time() < random_direction_duration:
+        if direction == "up":
+            y -= SPACE_SIZE
+        elif direction == "down":
+            y += SPACE_SIZE
+        elif direction == "left":
+            x -= SPACE_SIZE
+        elif direction == "right":
+            x += SPACE_SIZE
 
-    snake.coordinates.insert(0, (x, y))
-    square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR)
-    snake.squares.insert(0, square)
+        snake.coordinates.insert(0, (x, y))
+        square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR)
+        snake.squares.insert(0, square)
 
-    if x == food.coordinates[0] and y == food.coordinates[1]:
-        global score
+        if x == food.coordinates[0] and y == food.coordinates[1]:
+            global score
 
-        score += 1
-        label.config(text="Score:{}".format(score))
-        canvas.delete("food")
-        food = Food()
+            score += 1
+            label.config(text="Score:{}".format(score))
+            canvas.delete("food")
+            food = Food()
 
-    else:
-        del snake.coordinates[-1]
-        canvas.delete(snake.squares[-1])
-        del snake.squares[-1]
+        else:
+            del snake.coordinates[-1]
+            canvas.delete(snake.squares[-1])
+            del snake.squares[-1]
 
-    if check_collisions(snake):
-        game_over()
+        if check_collisions(snake):
+            game_over()
 
-    else:
-        window.after(SPEED, next_turn, snake, food)
+        else:
+            window.after(SPEED, next_turn, snake, food)
 
 
 def change_direction(new_direction):
@@ -111,17 +113,13 @@ def check_collisions(snake):
     x, y = snake.coordinates[0]
 
     if x < 0 or x >= GAME_WIDTH:
-        print("Check Collisions returned true 1")
         return True
     elif y < 0 or y >= GAME_HEIGHT:
-        print("Check Collisions returned true 2")
         return True
     counter = 0
     for body_part in snake.coordinates[1:]:
         counter += 1
-        print(counter)
         if x == body_part[0] and y == body_part[1]:
-            print("Check Collisions returned true 3")
             return True
     return False
 
@@ -146,7 +144,6 @@ def automation_control(snake):
         collision_status = check_collisions(snake)
         if (collision_status != True):
             # time.sleep(2)
-            print("entered loop")
             Random_No = random.randint(1, 4)
             if Random_No == 1:
                 change_direction('left')
