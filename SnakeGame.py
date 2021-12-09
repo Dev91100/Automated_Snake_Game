@@ -13,7 +13,7 @@ BODY_PARTS = 3
 SNAKE_COLOR = "#00FF00"
 FOOD_COLOR = "#FF0000"
 BACKGROUND_COLOR = "#000000"
-automation_control = "off" #on or off
+automation_controls = "off" #on or off
 
 
 class Snake:
@@ -24,7 +24,8 @@ class Snake:
         self.squares = []
 
         for i in range(0, BODY_PARTS):
-            self.coordinates.append([0, 0])
+            # self.coordinates.append([0, 0])
+            self.coordinates.append([GAME_WIDTH / 2, GAME_HEIGHT / 2])
 
         for x, y in self.coordinates:
             square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR, tag="snake")
@@ -112,12 +113,17 @@ def check_collisions(snake):
     x, y = snake.coordinates[0]
 
     if x < 0 or x >= GAME_WIDTH:
+        print("Check Collisions returned true 1")
         return True
     elif y < 0 or y >= GAME_HEIGHT:
+        print("Check Collisions returned true 2")
         return True
-
+    counter = 0
     for body_part in snake.coordinates[1:]:
+        counter += 1
+        print(counter)
         if x == body_part[0] and y == body_part[1]:
+            print("Check Collisions returned true 3")
             return True
 
     return False
@@ -128,32 +134,36 @@ def game_over():
     canvas.delete(ALL)
     canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,
                        font=('consolas',70), text="GAME OVER", fill="red", tag="gameover")
+    
 
 def automation_control(snake):
     print("entered function")
-    if automation_control == "off":
+    if automation_controls == "off":
         print("entered if")
         window.bind('<Left>', lambda event: change_direction('left'))
         window.bind('<Right>', lambda event: change_direction('right'))
         window.bind('<Up>', lambda event: change_direction('up'))
         window.bind('<Down>', lambda event: change_direction('down'))
         return True
-    elif automation_control == "on": 
+    elif automation_controls == "on": 
         print("entered else")
-        while ((check_collisions(snake)) != True):
-            time.sleep(2)
+        collision_status = check_collisions(snake)
+        print(collision_status)
+        while (collision_status != 0):
+            # time.sleep(2)
             print("entered loop")
             Random_No = random.randint(1, 4)
             print(Random_No)
             if Random_No == 1:
-                lambda event: change_direction('left')
+                change_direction('left')
             elif Random_No == 2:
-                lambda event: change_direction('right') 
+                change_direction('right') 
             elif Random_No == 3:
-                lambda event: change_direction('up') 
+                change_direction('up') 
             elif Random_No == 4:
-                lambda event: change_direction('down') 
-    return False
+                change_direction('down') 
+            
+
 
 window = Tk()
 window.title("Snake game")
@@ -189,7 +199,7 @@ window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 snake = Snake()
 food = Food()
 
-print(automation_control(snake))
+automation_control(snake)
 print("passed automation control")
 
 next_turn(snake, food)
