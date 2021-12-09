@@ -13,6 +13,8 @@ BODY_PARTS = 3
 SNAKE_COLOR = "#00FF00"
 FOOD_COLOR = "#FF0000"
 BACKGROUND_COLOR = "#000000"
+
+#Switch for automated random movement
 automation_controls = "on" #on or off
 
 
@@ -48,7 +50,9 @@ class Food:
 
 
 def next_turn(snake, food):
+
     automation_control(snake)
+
     x, y = snake.coordinates[0]
 
     if direction == "up":
@@ -61,29 +65,20 @@ def next_turn(snake, food):
         x += SPACE_SIZE
 
     snake.coordinates.insert(0, (x, y))
-
     square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR)
-
     snake.squares.insert(0, square)
 
     if x == food.coordinates[0] and y == food.coordinates[1]:
-
         global score
 
         score += 1
-
         label.config(text="Score:{}".format(score))
-
         canvas.delete("food")
-
         food = Food()
 
     else:
-
         del snake.coordinates[-1]
-
         canvas.delete(snake.squares[-1])
-
         del snake.squares[-1]
 
     if check_collisions(snake):
@@ -128,7 +123,6 @@ def check_collisions(snake):
         if x == body_part[0] and y == body_part[1]:
             print("Check Collisions returned true 3")
             return True
-
     return False
 
 
@@ -140,24 +134,20 @@ def game_over():
     
 
 def automation_control(snake):
-    print("entered function")
+
     if automation_controls == "off":
-        print("entered if")
         window.bind('<Left>', lambda event: change_direction('left'))
         window.bind('<Right>', lambda event: change_direction('right'))
         window.bind('<Up>', lambda event: change_direction('up'))
         window.bind('<Down>', lambda event: change_direction('down'))
         return True
+        
     elif automation_controls == "on": 
-        print("entered else")
         collision_status = check_collisions(snake)
-        print("The collision status is : ")
-        print(collision_status)
         if (collision_status != True):
             # time.sleep(2)
             print("entered loop")
             Random_No = random.randint(1, 4)
-            print(Random_No)
             if Random_No == 1:
                 change_direction('left')
             elif Random_No == 2:
@@ -167,7 +157,6 @@ def automation_control(snake):
             elif Random_No == 4:
                 change_direction('down') 
             
-
 
 window = Tk()
 window.title("Snake game")
@@ -204,7 +193,6 @@ snake = Snake()
 food = Food()
 
 # automation_control(snake)
-print("passed automation control")
 
 next_turn(snake, food)
 
