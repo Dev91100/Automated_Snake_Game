@@ -13,7 +13,7 @@ BODY_PARTS = 3
 SNAKE_COLOR = "#00FF00"
 FOOD_COLOR = "#FF0000"
 BACKGROUND_COLOR = "#000000"
-automation_controls = "off" #on or off
+automation_controls = "on" #on or off
 
 
 class Snake:
@@ -45,7 +45,7 @@ class Food:
 
 
 def next_turn(snake, food):
-
+    automation_control(snake)
     x, y = snake.coordinates[0]
 
     if direction == "up":
@@ -148,8 +148,9 @@ def automation_control(snake):
     elif automation_controls == "on": 
         print("entered else")
         collision_status = check_collisions(snake)
+        print("The collision status is : ")
         print(collision_status)
-        while (collision_status != 0):
+        if (collision_status != True):
             # time.sleep(2)
             print("entered loop")
             Random_No = random.randint(1, 4)
@@ -199,7 +200,7 @@ window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 snake = Snake()
 food = Food()
 
-automation_control(snake)
+# automation_control(snake)
 print("passed automation control")
 
 next_turn(snake, food)
