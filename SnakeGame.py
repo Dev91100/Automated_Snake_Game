@@ -143,20 +143,27 @@ def automation_control(snake):
     elif automation_controls == "on": 
         collision_status = check_collisions(snake)
         if (collision_status != True):
-            # time.sleep(2)
-            random_direction(3)
+            Random_No_Of_Squares = random.randint(1, 20)
+            random_direction(Random_No_Of_Squares)
 
+square_duration_count = 0
 
-def random_direction(duration_in_squares):
-    Random_No = random.randint(1, 4)
-    if Random_No == 1:
-        change_direction('left')
-    elif Random_No == 2:
-        change_direction('right') 
-    elif Random_No == 3:
-        change_direction('up') 
-    elif Random_No == 4:
-        change_direction('down') 
+def random_direction(duration_in_squares):   
+    global square_duration_count
+    if square_duration_count <= duration_in_squares:
+        square_duration_count += 1
+        print(square_duration_count)
+    else:
+        Random_No = random.randint(1, 4)
+        square_duration_count = 0
+        if Random_No == 1:
+            change_direction('left')
+        elif Random_No == 2:
+            change_direction('right') 
+        elif Random_No == 3:
+            change_direction('up') 
+        elif Random_No == 4:
+            change_direction('down') 
 
 window = Tk()
 window.title("Snake game")
