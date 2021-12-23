@@ -55,39 +55,39 @@ def next_turn(snake, food):
 
     x, y = snake.coordinates[0]
 
-    random_direction_duration = time.time() + 3
-    while time.time() < random_direction_duration:
-        if direction == "up":
-            y -= SPACE_SIZE
-        elif direction == "down":
-            y += SPACE_SIZE
-        elif direction == "left":
-            x -= SPACE_SIZE
-        elif direction == "right":
-            x += SPACE_SIZE
+    # random_direction_duration = time.time() + 3
+    # while time.time() < random_direction_duration:
+    if direction == "up":
+        y -= SPACE_SIZE
+    elif direction == "down":
+        y += SPACE_SIZE
+    elif direction == "left":
+        x -= SPACE_SIZE
+    elif direction == "right":
+        x += SPACE_SIZE
 
-        snake.coordinates.insert(0, (x, y))
-        square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR)
-        snake.squares.insert(0, square)
+    snake.coordinates.insert(0, (x, y))
+    square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR)
+    snake.squares.insert(0, square)
 
-        if x == food.coordinates[0] and y == food.coordinates[1]:
-            global score
+    if x == food.coordinates[0] and y == food.coordinates[1]:
+        global score
 
-            score += 1
-            label.config(text="Score:{}".format(score))
-            canvas.delete("food")
-            food = Food()
+        score += 1
+        label.config(text="Score:{}".format(score))
+        canvas.delete("food")
+        food = Food()
 
-        else:
-            del snake.coordinates[-1]
-            canvas.delete(snake.squares[-1])
-            del snake.squares[-1]
+    else:
+        del snake.coordinates[-1]
+        canvas.delete(snake.squares[-1])
+        del snake.squares[-1]
 
-        if check_collisions(snake):
-            game_over()
+    if check_collisions(snake):
+        game_over()
 
-        else:
-            window.after(SPEED, next_turn, snake, food)
+    else:
+        window.after(SPEED, next_turn, snake, food)
 
 
 def change_direction(new_direction):
@@ -144,16 +144,19 @@ def automation_control(snake):
         collision_status = check_collisions(snake)
         if (collision_status != True):
             # time.sleep(2)
-            Random_No = random.randint(1, 4)
-            if Random_No == 1:
-                change_direction('left')
-            elif Random_No == 2:
-                change_direction('right') 
-            elif Random_No == 3:
-                change_direction('up') 
-            elif Random_No == 4:
-                change_direction('down') 
-            
+            random_direction(3)
+
+
+def random_direction(duration_in_squares):
+    Random_No = random.randint(1, 4)
+    if Random_No == 1:
+        change_direction('left')
+    elif Random_No == 2:
+        change_direction('right') 
+    elif Random_No == 3:
+        change_direction('up') 
+    elif Random_No == 4:
+        change_direction('down') 
 
 window = Tk()
 window.title("Snake game")
