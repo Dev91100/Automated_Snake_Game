@@ -1,5 +1,5 @@
 # ************************************
-# Python Snake
+# Python Snake(From Bro Code)
 # ************************************
 from tkinter import *
 import random
