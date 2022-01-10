@@ -1,0 +1,22 @@
+Simple Reflex Algorithm: 
+
+def simple_reflex_agent(percept):
+	state = get_state_from_percept(percept)                 => Random directions ✔
+	rule = match_rule(state, rules)
+	action = rule.Action
+	return action
+
+******************************************************************************************************
+
+Model-Based Reflex Agent: 
+
+def model_based_reflex_agent(percept):
+	state = update_state(state, action, percept, model)     =>  Suggest a Direction ✔
+	rule = match_rule(state, rules)                         =>  Check the Direction ✔
+	action = rule.Action                                    =>  Move the snake ✔
+	return action                                           =>  update the previous direction ✔
+
+
+
+
+

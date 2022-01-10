@@ -55,8 +55,6 @@ def next_turn(snake, food):
 
     x, y = snake.coordinates[0]
 
-    # random_direction_duration = time.time() + 3
-    # while time.time() < random_direction_duration:
     if direction == "up":
         y -= SPACE_SIZE
     elif direction == "down":
