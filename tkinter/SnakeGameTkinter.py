@@ -15,7 +15,7 @@ FOOD_COLOR = "#FF0000"
 BACKGROUND_COLOR = "#000000"
 
 #Switch for automated random movement
-automation_controls = "on" #on or off
+#automation_controls = "on" #on or off
 
 
 class Snake:
@@ -51,7 +51,7 @@ class Food:
 
 def next_turn(snake, food):
 
-    automation_control(snake)
+    snake_control(snake)
 
     x, y = snake.coordinates[0]
 
@@ -93,6 +93,11 @@ def next_turn(snake, food):
 def change_direction(new_direction):
 
     global direction
+    global previous_direction
+
+    #Collect Previous Direction Info Before It Changes To A New One
+    previous_direction = direction
+    print("previous direction is " + previous_direction)
 
     if new_direction == 'left':
         if direction != 'right':
@@ -131,39 +136,61 @@ def game_over():
                        font=('consolas',70), text="GAME OVER", fill="red", tag="gameover")
     
 
-def automation_control(snake):
+def snake_control(snake):
+    collision_status = check_collisions(snake)
+    if (collision_status != True):
+        random_direction()
 
-    if automation_controls == "off":
-        window.bind('<Left>', lambda event: change_direction('left'))
-        window.bind('<Right>', lambda event: change_direction('right'))
-        window.bind('<Up>', lambda event: change_direction('up'))
-        window.bind('<Down>', lambda event: change_direction('down'))
-        return True
-        
-    elif automation_controls == "on": 
-        collision_status = check_collisions(snake)
-        if (collision_status != True):
-            Random_No_Of_Squares = random.randint(1, 20)
-            random_direction(Random_No_Of_Squares)
 
-square_duration_count = 0
+proposed_direction = 'down'
 
-def random_direction(duration_in_squares):   
-    global square_duration_count
-    if square_duration_count <= duration_in_squares:
-        square_duration_count += 1
-        print(square_duration_count)
+def propose_a_direction():
+    global proposed_direction
+
+    Random_No = random.randint(1, 4)
+    if Random_No == 1 and direction != 'right':
+        proposed_direction = 'left'
+    elif Random_No == 2 and direction != 'left':
+        proposed_direction = 'right' 
+    elif Random_No == 3 and direction != 'down':
+        proposed_direction = 'up'
+    elif Random_No == 4 and direction != 'up':
+        proposed_direction = 'down'
     else:
-        Random_No = random.randint(1, 4)
-        square_duration_count = 0
-        if Random_No == 1:
-            change_direction('left')
-        elif Random_No == 2:
-            change_direction('right') 
-        elif Random_No == 3:
-            change_direction('up') 
-        elif Random_No == 4:
-            change_direction('down') 
+        propose_a_direction()
+    return proposed_direction
+
+def same_as_previous_direction(past_direction):
+    xa = propose_a_direction()
+    print("proposed direction while comparing is " + xa + " while previous direction is " + past_direction)
+    if past_direction == xa:
+        print("comparison returned true")
+        return True
+    else:
+        print("comparison returned false")
+        return False
+
+
+# Suggest a Direction ✔
+# Check the Direction ✔
+# Move the snake ✔
+# update the previous direction ✔
+
+previous_direction = 'down'
+
+def random_direction():   
+    # global previous_direction
+
+    # print(same_as_previous_direction())
+    while (same_as_previous_direction(previous_direction) == True):
+
+        propose_a_direction()
+        # print("distinct new direction is")
+        # print(distinct_new_direction)
+
+    print("proposed direction is " + proposed_direction)
+    change_direction(proposed_direction)
+    print("changed direction to " + proposed_direction)
 
 window = Tk()
 window.title("Snake game")
