@@ -27,7 +27,18 @@ class Snake():
         cur = self.get_head_position()
         x,y = self.direction
         new = (((cur[0]+(x*gridsize))%screen_width), (cur[1]+(y*gridsize))%screen_height)
+        print(cur[0])
+
+        #When snake collides with itself
         if len(self.positions) > 2 and new in self.positions[2:]:
+            print(new)
+            self.reset()
+            
+        # if (new[0] in self.positions == (screen_width - grid_width)) or (new[1] in self.positions == (screen_height - grid_height)):
+        #     print("touched barrier")
+
+        elif (cur[0] == (screen_width - gridsize) or (cur[0] == 0)) or (cur[1] == (screen_height - gridsize) or (cur[1] == 0)):
+            print("touched barrier")
             self.reset()
         else:
             self.positions.insert(0,new)
