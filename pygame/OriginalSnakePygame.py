@@ -27,16 +27,13 @@ class Snake():
         cur = self.get_head_position()
         x,y = self.direction
         new = (((cur[0]+(x*gridsize))%screen_width), (cur[1]+(y*gridsize))%screen_height)
-        print(cur[0])
-
+        # print(cur)
+ 
         #When snake collides with itself
         if len(self.positions) > 2 and new in self.positions[2:]:
-            print(new)
+            print("self collision")
             self.reset()
-            
-        # if (new[0] in self.positions == (screen_width - grid_width)) or (new[1] in self.positions == (screen_height - grid_height)):
-        #     print("touched barrier")
-
+        #When snake touches a barrier 
         elif (cur[0] == (screen_width - gridsize) or (cur[0] == 0)) or (cur[1] == (screen_height - gridsize) or (cur[1] == 0)):
             print("touched barrier")
             self.reset()
@@ -76,10 +73,13 @@ class Food():
     def __init__(self):
         self.position = (0,0)
         self.color = (223, 163, 49)
-        self.randomize_position()
+
+        while (self.position[0] == 0 or self.position[1] == 0 or self.position[0] == screen_width or self.position[0] == screen_height):
+            self.randomize_position()
 
     def randomize_position(self):
-        self.position = (random.randint(0, grid_width-1)*gridsize, random.randint(0, grid_height-1)*gridsize)
+        self.position = (random.randint(0, grid_width-3)*gridsize, random.randint(0, grid_height-3)*gridsize)
+        print(self.position)
 
     def draw(self, surface):
         r = pygame.Rect((self.position[0], self.position[1]), (gridsize, gridsize))
@@ -118,8 +118,7 @@ def main():
     surface = surface.convert()
     drawGrid(surface)
 
-    snake = Snake()
-    food = Food()
+
 
     myfont = pygame.font.SysFont("monospace",16)
 
@@ -137,6 +136,37 @@ def main():
         screen.blit(surface, (0,0))
         text = myfont.render("Score {0}".format(snake.score), 1, (0,0,0))
         screen.blit(text, (5,10))
+        snake.turn(GOAL_BASED_AGENT(snake.get_head_position()))
         pygame.display.update()
 
+# percept => current location of snake
+# state => 
+# goal => location of food
+# rules => x and y coordinates must match
+# action => last movement?
+
+def GOAL_BASED_AGENT(current_location):
+    goal = food.position
+    action = up
+
+    if (goal[0] != current_location[0]):
+        if (goal[0] > current_location[0]):
+            action = right
+        elif (goal[0] < current_location[0]):
+            action = left
+    # else:
+    #     action = random.choice([left, right])
+
+    if (goal[1] != current_location[1]):
+        if (goal[1] > current_location[1]):
+            action = down
+        elif (goal[1] < current_location[1]):
+            action = up
+    # else:
+    #     action = random.choice([up, down])
+
+    return action
+    
+snake = Snake()
+food = Food()
 main()
