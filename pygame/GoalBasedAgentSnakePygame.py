@@ -91,7 +91,7 @@ def drawGrid(surface):
         for x in range(0, int(grid_width)):
             if (x+y)%2 == 0:
                 r = pygame.Rect((x*gridsize, y*gridsize), (gridsize,gridsize))
-                pygame.draw.rect(surface,(93,216,228), r)
+                pygame.draw.rect(surface,(84,194,205), r)
             else:
                 rr = pygame.Rect((x*gridsize, y*gridsize), (gridsize,gridsize))
                 pygame.draw.rect(surface, (84,194,205), rr)
@@ -123,7 +123,7 @@ def main():
     myfont = pygame.font.SysFont("monospace",16)
 
     while (True):
-        clock.tick(10)
+        clock.tick(20)
         snake.handle_keys()
         drawGrid(surface)
         snake.move()
@@ -134,7 +134,7 @@ def main():
         snake.draw(surface)
         food.draw(surface)
         screen.blit(surface, (0,0))
-        text = myfont.render("Score {0}".format(snake.score), 1, (0,0,0))
+        text = myfont.render("Score : {0}".format(snake.score), 1, (0,0,0))
         screen.blit(text, (5,10))
         snake.turn(GOAL_BASED_AGENT(snake.get_head_position()))
         pygame.display.update()

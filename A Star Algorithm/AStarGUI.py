@@ -4,8 +4,8 @@ import numpy as np
 
 pygame.init()
 
-sx = 600
-sy = 600
+sx = 480
+sy = 480
 screen = pygame.display.set_mode((sx, sy))
 done = False
 x = 0
@@ -13,7 +13,7 @@ y = 0
 ev = 'r'
 fl = 0
 clock = pygame.time.Clock()
-color = (0, 128, 255)
+color = (0, 0, 0) #(Snake Tail Color)
 sp = {0: (x, y)}
 size = 1
 points = 0
@@ -138,19 +138,19 @@ def astar(maze, start, end):
                     open_list.append(child)
 
 
-def newScore(sc):
-    f = open("score.txt", "w")
-    f.write(sc)
-    f.close()
+# def newScore(sc):
+#     f = open("score.txt", "w")
+#     f.write(sc)
+#     f.close()
 
 
 pygame.font.init()
-myfont = pygame.font.SysFont('Comic Sans MS', 15)
+myfont = pygame.font.SysFont("monospace",16)
 
 
 def drawbox(x, y, col=color):
     pygame.draw.rect(screen, col, pygame.Rect(x, y, 20, 20))
-    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(x, y, 20, 20), 2)
+    pygame.draw.rect(screen, (84,194,205), pygame.Rect(x, y, 20, 20), 2) #(Block border in snake)
 
 
 def randomSnack():
@@ -187,7 +187,7 @@ def genMatrix(sp):
     print(path)
     return path
 
-
+#Screen color
 screen.fill((0, 0, 0))
 con = 0
 # pygame.mixer.music.load('sound/disfigure_blank.mp3')
@@ -198,7 +198,7 @@ while not done:
     # if max_sc < points:
     #     max_sc = points
     screen.blit(pygame.image.load('apple.png'), (rx - 2, ry - 2))
-    textsurface = myfont.render("Current Score : " + str(points), False, (255, 255, 0))
+    textsurface = myfont.render("Score : " + str(points), 1, (0, 0, 0))
     # textsurface2 = myfont.render("Max Score : " + str(max_sc), False, (255, 255, 0))
     screen.blit(textsurface, (sx - 160, 30))
     # screen.blit(textsurface2, (sx - 160, 10))
@@ -241,13 +241,13 @@ while not done:
         continue
     for j in path:
         fl = 0
-        screen.fill((0, 0, 0))
+        screen.fill((84,194,205)) #Background color
         # if max_sc < points:
         #     max_sc = points
         screen.blit(pygame.image.load('apple.png'), (rx - 2, ry - 2))
-        textsurface = myfont.render("Current Score : " + str(points), False, (255, 255, 0))
+        textsurface = myfont.render("Score : " + str(points), 1, (0, 0, 0))
         # textsurface2 = myfont.render("Max Score : " + str(max_sc), False, (255, 255, 0))
-        screen.blit(textsurface, (sx - 160, 30))
+        screen.blit(textsurface, (5, 10))
         # screen.blit(textsurface2, (sx - 160, 10))
         nx, ny = sp[0]
         nx1, ny1 = j
@@ -259,16 +259,16 @@ while not done:
             drawbox(nx, ny, color)
             tx, ty = sp[i - 1]
             sp[i] = (tx, ty)
-        drawbox(nx1, ny1, (0, 0, 255))
+        drawbox(nx1, ny1, (0, 0, 0)) #snake head color
         pygame.display.flip()
-        clock.tick(60)
+        clock.tick(20)
         x, y = sp[0]
         if x == rx and y == ry:
             sp[size] = (rx + 1, ry + 1)
             rx, ry = randomSnack()
             if size < 5000:
                 size += 1
-            points += 10
+            points += 1
             # pygame.mixer.Channel(1).set_volume(0.5)
             # pygame.mixer.Channel(1).play(pygame.mixer.Sound('sound/hit.wav'))
     # print(sp)
