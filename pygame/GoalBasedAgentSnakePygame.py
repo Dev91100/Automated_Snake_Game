@@ -149,19 +149,36 @@ def GOAL_BASED_AGENT(current_location):
     goal = food.position
     action = up
 
+    # if (goal[0] == current_location[0]):
+    #     print("y axis should be equal")
+    #     # action = random.choice([left, right])
+    #     action = right
+    #     return action
+    #     print(str(action))
+
+    # if (goal[1] == current_location[1]):
+    #     print("x axis should be equal")
+    #     action = random.choice([up, down])
+    #     return action
+    #     print(str(action))
+
     if (goal[0] != current_location[0]):
         if (goal[0] > current_location[0]):
             action = right
+            return action
         elif (goal[0] < current_location[0]):
             action = left
+            return action
     # else:
     #     action = random.choice([left, right])
 
     if (goal[1] != current_location[1]):
         if (goal[1] > current_location[1]):
             action = down
+            return action
         elif (goal[1] < current_location[1]):
             action = up
+            return action
     # else:
     #     action = random.choice([up, down])
 
