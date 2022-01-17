@@ -74,11 +74,11 @@ class Food():
         self.position = (0,0)
         self.color = (223, 163, 49)
 
-        while (self.position[0] == 0 or self.position[1] == 0 or self.position[0] == screen_width or self.position[0] == screen_height):
-            self.randomize_position()
+        # while (self.position[0] == 0 or self.position[1] == 0 or self.position[0] == screen_width or self.position[0] == screen_height):
+        self.randomize_position()
 
     def randomize_position(self):
-        self.position = (random.randint(0, grid_width-3)*gridsize, random.randint(0, grid_height-3)*gridsize)
+        self.position = (random.randint(1, grid_width-2)*gridsize, random.randint(1, grid_height-2)*gridsize)
         print(self.position)
 
     def draw(self, surface):
